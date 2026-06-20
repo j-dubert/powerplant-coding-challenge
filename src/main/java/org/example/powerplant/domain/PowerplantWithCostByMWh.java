@@ -16,7 +16,7 @@ public class PowerplantWithCostByMWh {
 
     private double calculateProfitability(POWER_PLANT_TYPE type, double efficiency, FuelsDTO fuels) {
         double fuelPrice = getFuelPrice(type, fuels);
-        return fuelPrice * efficiency;
+        return fuelPrice / efficiency;
     }
 
     private double getFuelPrice(POWER_PLANT_TYPE type, FuelsDTO fuels) {
