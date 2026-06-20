@@ -1,6 +1,6 @@
 package org.example.powerplant.domain;
 
-public record PowerplantPlan(
+public record PowerPlantProduction(
         String name,
         double p
 ) {

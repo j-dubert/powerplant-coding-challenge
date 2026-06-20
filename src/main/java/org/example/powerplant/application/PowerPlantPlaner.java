@@ -3,7 +3,7 @@ package org.example.powerplant.application;
 import org.example.powerplant.domain.DTO.FuelsDTO;
 import org.example.powerplant.domain.DTO.NeedDescriptionDTO;
 import org.example.powerplant.domain.DTO.POWER_PLANT_TYPE;
-import org.example.powerplant.domain.PowerplantPlan;
+import org.example.powerplant.domain.PowerPlantProduction;
 import org.example.powerplant.domain.PowerplantWithCostByMWh;
 import org.jspecify.annotations.NonNull;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PowerPlantPlaner {
 
-    public List<PowerplantPlan> planification(NeedDescriptionDTO input) {
+    public List<PowerPlantProduction> planification(NeedDescriptionDTO input) {
         double totalLoad = input.load();
         FuelsDTO fuelsPrice = input.fuels();
         List<PowerplantWithCostByMWh> powerPlantsWithCostByMWh = input.powerplants()
@@ -29,13 +29,13 @@ public class PowerPlantPlaner {
 
     }
 
-    private static @NonNull List<PowerplantPlan> getPowerplantPlans(double totalLoad, List<PowerplantWithCostByMWh> powerPlantsWithCostByMWh, FuelsDTO fuelsPrice) {
-        List<PowerplantPlan> plans = new ArrayList<>();
+    private static @NonNull List<PowerPlantProduction> getPowerplantPlans(double totalLoad, List<PowerplantWithCostByMWh> powerPlantsWithCostByMWh, FuelsDTO fuelsPrice) {
+        List<PowerPlantProduction> plans = new ArrayList<>();
         double remaining = totalLoad;
 
         for (var powerPlant : powerPlantsWithCostByMWh) {
             if (remaining <= 0) {
-                plans.add(new PowerplantPlan(powerPlant.getName(), 0));
+                plans.add(new PowerPlantProduction(powerPlant.getName(), 0));
                 continue;
             }
             double maxPowerGenerated = powerPlant.getType() == POWER_PLANT_TYPE.WINDTURBINE
@@ -46,13 +46,13 @@ public class PowerPlantPlaner {
             p = Math.round(p * 10) / 10.0;
 
             if (p < powerPlant.getPmin()) {
-                PowerplantPlan last = plans.getLast();
+                PowerPlantProduction last = plans.getLast();
                 plans.removeLast();
-                plans.add(new PowerplantPlan(last.name(), last.p() - (powerPlant.getPmin() - p)));
+                plans.add(new PowerPlantProduction(last.name(), last.p() - (powerPlant.getPmin() - p)));
                 p = powerPlant.getPmin();
             }
 
-            plans.add(new PowerplantPlan(powerPlant.getName(), p));
+            plans.add(new PowerPlantProduction(powerPlant.getName(), p));
             remaining -= p;
         }
         return plans;

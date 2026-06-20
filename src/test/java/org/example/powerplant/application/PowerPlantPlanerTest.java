@@ -4,8 +4,7 @@ import org.example.powerplant.domain.DTO.FuelsDTO;
 import org.example.powerplant.domain.DTO.NeedDescriptionDTO;
 import org.example.powerplant.domain.DTO.POWER_PLANT_TYPE;
 import org.example.powerplant.domain.DTO.PowerPlantDTO;
-import org.example.powerplant.domain.PowerplantPlan;
-import org.example.powerplant.exposition.ProductionPlan;
+import org.example.powerplant.domain.PowerPlantProduction;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ class PowerPlantPlanerTest {
         var need = new NeedDescriptionDTO(250, fuels, List.of(wind, gas));
 
         PowerPlantPlaner planer = new PowerPlantPlaner();
-        List<PowerplantPlan> plans = planer.planification(need);
+        List<PowerPlantProduction> plans = planer.planification(need);
 
         assertEquals(2, plans.size());
         assertEquals("wind1", plans.get(0).name());
@@ -50,7 +49,7 @@ class PowerPlantPlanerTest {
         var need = new NeedDescriptionDTO(320, fuels, List.of(wind, gas1, gas2, smallGas));
 
         PowerPlantPlaner planer = new PowerPlantPlaner();
-        List<PowerplantPlan> plans = planer.planification(need);
+        List<PowerPlantProduction> plans = planer.planification(need);
 
         log.info(objectMapper.writeValueAsString(plans));
 
